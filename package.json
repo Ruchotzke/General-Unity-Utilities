@@ -1,0 +1,19 @@
+{
+  "name": "com.ruchotzke.general-unity-utils",
+  "version": "0.0.1",
+  "displayName": "General Unity Utils",
+  "description": "This package contains many different utilities which are useful across a variety of projects.",
+  "unity": "2021.2",
+  "unityRelease": "6f1",
+  "documentationUrl": "https://example.com/",
+  "changelogUrl": "https://example.com/changelog.html",
+  "licensesUrl": "https://example.com/licensing.html",
+  "dependencies": {},
+ "keywords": [
+  ],
+  "author": {
+    "name": "Ethan Ruchotzke",
+    "email": "Ruchotzkeepr@gmail.com",
+    "url": "https://www.unity3d.com"
+  }
+}
