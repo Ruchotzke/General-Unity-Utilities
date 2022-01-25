@@ -91,7 +91,7 @@ namespace GeneralUnityUtils.Tweening
                 {
                     /* completed tween */
                     completed.Add(tween);
-                    tween.completeCallback(tween.tween.TargetTransform.gameObject);
+                    if(tween.completeCallback != null) tween.completeCallback(tween.tween.TargetTransform.gameObject);
                 }
             }
             
