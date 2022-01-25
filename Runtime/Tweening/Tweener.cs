@@ -70,6 +70,11 @@ namespace GeneralUnityUtils.Tweening
             currentTweens.Add((new RectTween(start, end, time, transform), callback, update));
         }
 
+        void Awake()
+        {
+            DontDestroyOnLoad(gameObject);
+        }
+
         public void Update()
         {
             /* Update each tween. handle tweens which have completed. */
