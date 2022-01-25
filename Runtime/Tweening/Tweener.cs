@@ -72,6 +72,10 @@ namespace GeneralUnityUtils.Tweening
 
         void Awake()
         {
+            /* First make sure we are the only tweener. If not, destroy this instance */
+            if (_singleton != null) Destroy(gameObject);
+
+            /* We are the singleton */
             DontDestroyOnLoad(gameObject);
         }
 
