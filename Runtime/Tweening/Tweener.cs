@@ -53,7 +53,7 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Transform start, Transform end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime, OnTweenUpdate update = null)
+        public void Tween(Transform start, Transform end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, OnTweenUpdate update = null)
         {
             currentTweens.Add((new DynamicTween(start, end, time, transform), callback, update, useScaledTime));
         }
@@ -65,7 +65,7 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Vector2 start, Vector2 end, RectTransform transform, float time, OnTweenComplete callback, bool useScaleTime, OnTweenUpdate update = null)
+        public void Tween(Vector2 start, Vector2 end, RectTransform transform, float time, OnTweenComplete callback, bool useScaleTime = true, OnTweenUpdate update = null)
         {
             currentTweens.Add((new RectTween(start, end, time, transform), callback, update, useScaleTime));
         }
