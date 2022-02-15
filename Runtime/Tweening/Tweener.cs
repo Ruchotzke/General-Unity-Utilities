@@ -82,7 +82,7 @@ namespace GeneralUnityUtils.Tweening
         public void Update()
         {
             /* Update each tween. handle tweens which have completed. */
-            List<(TweenItem, OnTweenComplete, OnTweenUpdate)> completed = new List<(TweenItem, OnTweenComplete, OnTweenUpdate)>();
+            List<(TweenItem, OnTweenComplete, OnTweenUpdate, bool)> completed = new List<(TweenItem, OnTweenComplete, OnTweenUpdate, bool)>();
             foreach(var tween in currentTweens)
             {
                 float delta = tween.useScaledTime ? Time.deltaTime : Time.unscaledDeltaTime;
