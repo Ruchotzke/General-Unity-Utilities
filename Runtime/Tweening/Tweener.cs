@@ -31,7 +31,7 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="target"></param>
         public delegate void OnTweenUpdate(GameObject target, float percentage);
 
-        List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback)> currentTweens = new List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback)>();
+        List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback, bool useScaleTime)> currentTweens = new List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback, bool useScaleTime)>();
 
         /// <summary>
         /// Tween an item between two positions over a set amount of time.
@@ -40,9 +40,9 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Vector2 start, Vector2 end, Transform transform, float time, OnTweenComplete callback, OnTweenUpdate update = null)
+        public void Tween(Vector2 start, Vector2 end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, OnTweenUpdate update = null)
         {
-            currentTweens.Add((new StaticTween(start, end, time, transform), callback, update));
+            currentTweens.Add((new StaticTween(start, end, time, transform), callback, update, useScaledTime));
         }
 
         /// <summary>
@@ -53,9 +53,9 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Transform start, Transform end, Transform transform, float time, OnTweenComplete callback, OnTweenUpdate update = null)
+        public void Tween(Transform start, Transform end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime, OnTweenUpdate update = null)
         {
-            currentTweens.Add((new DynamicTween(start, end, time, transform), callback, update));
+            currentTweens.Add((new DynamicTween(start, end, time, transform), callback, update, useScaledTime));
         }
 
         /// <summary>
@@ -65,9 +65,9 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Vector2 start, Vector2 end, RectTransform transform, float time, OnTweenComplete callback, OnTweenUpdate update = null)
+        public void Tween(Vector2 start, Vector2 end, RectTransform transform, float time, OnTweenComplete callback, bool useScaleTime, OnTweenUpdate update = null)
         {
-            currentTweens.Add((new RectTween(start, end, time, transform), callback, update));
+            currentTweens.Add((new RectTween(start, end, time, transform), callback, update, useScaleTime));
         }
 
         void Awake()
@@ -85,7 +85,8 @@ namespace GeneralUnityUtils.Tweening
             List<(TweenItem, OnTweenComplete, OnTweenUpdate)> completed = new List<(TweenItem, OnTweenComplete, OnTweenUpdate)>();
             foreach(var tween in currentTweens)
             {
-                bool completedTween = tween.tween.UpdatePosition(Time.deltaTime);
+                float delta = tween.useScaledTime ? Time.deltaTime : Time.unscaledDeltaTime;
+                bool completedTween = tween.tween.UpdatePosition(delta);
                 if (tween.updateCallback != null) tween.updateCallback(tween.tween.TargetTransform.gameObject, tween.tween.GetPercentage());
                 if (completedTween)
                 {
