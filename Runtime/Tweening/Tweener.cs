@@ -85,7 +85,7 @@ namespace GeneralUnityUtils.Tweening
             List<(TweenItem, OnTweenComplete, OnTweenUpdate, bool)> completed = new List<(TweenItem, OnTweenComplete, OnTweenUpdate, bool)>();
             foreach(var tween in currentTweens)
             {
-                float delta = tween.useScaledTime ? Time.deltaTime : Time.unscaledDeltaTime;
+                float delta = tween.useScaleTime ? Time.deltaTime : Time.unscaledDeltaTime;
                 bool completedTween = tween.tween.UpdatePosition(delta);
                 if (tween.updateCallback != null) tween.updateCallback(tween.tween.TargetTransform.gameObject, tween.tween.GetPercentage());
                 if (completedTween)
