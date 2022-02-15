@@ -53,7 +53,7 @@ namespace GeneralUnityUtils.Tweening
 
         public override bool UpdatePosition(float deltaTime)
         {
-            currTime += Time.deltaTime;
+            currTime += deltaTime;
 
             if(base.currTime >= TweenTime)
             {
@@ -83,7 +83,7 @@ namespace GeneralUnityUtils.Tweening
 
         public override bool UpdatePosition(float deltaTime)
         {
-            currTime += Time.deltaTime;
+            currTime += deltaTime;
 
             if (base.currTime >= TweenTime)
             {
@@ -111,7 +111,7 @@ namespace GeneralUnityUtils.Tweening
 
         public override bool UpdatePosition(float deltaTime)
         {
-            currTime += Time.deltaTime;
+            currTime += deltaTime;
 
             if (base.currTime >= TweenTime)
             {
