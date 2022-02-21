@@ -70,6 +70,23 @@ namespace GeneralUnityUtils.Tweening
             currentTweens.Add((new RectTween(start, end, time, transform), callback, update, useScaleTime));
         }
 
+        /// <summary>
+        /// Tween a general float parameter between two values over a given amount of time.
+        /// </summary>
+        /// <param name="start">The starting value.</param>
+        /// <param name="end">The ending value</param>
+        /// <param name="parameter">The REFERENCE parameter to be tweened.</param>
+        /// <param name="time">The time over which the tween takes place.</param>
+        /// <param name="callback">A callback for when the tween is complete.</param>
+        /// <param name="useScaleTime">Should the tween use scaled time?</param>
+        /// <param name="update">A callback used on every update.</param>
+        /// <returns></returns>
+        public void Tween(float start, float end, ref float parameter, float time, OnTweenComplete callback,
+            bool useScaleTime = true, OnTweenUpdate update = null)
+        {
+            currentTweens.Add((new GeneralTween(start, end, time, parameter), callback, update, useScaleTime));
+        }
+
         void Awake()
         {
             /* First make sure we are the only tweener. If not, destroy this instance */
