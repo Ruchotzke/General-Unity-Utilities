@@ -128,7 +128,7 @@ namespace GeneralUnityUtils.Tweening
 
     public class GeneralTween : TweenItem
     {
-        public ref float parameter;
+        public ref float Parameter;
         public float Start;
         public float End;
         
@@ -136,7 +136,7 @@ namespace GeneralUnityUtils.Tweening
         {
             Start = start;
             End = end;
-            parameter = target;
+            Parameter = target;
         }
         
         public override bool UpdatePosition(float deltaTime)
@@ -145,12 +145,12 @@ namespace GeneralUnityUtils.Tweening
 
             if (base.currTime >= TweenTime)
             {
-                parameter = End;
+                Parameter = End;
                 return true;
             }
             else
             {
-                parameter = Mathf.Lerp(Start, End, currTime / TweenTime);
+                Parameter = Mathf.Lerp(Start, End, currTime / TweenTime);
                 return false;
             }
         }
