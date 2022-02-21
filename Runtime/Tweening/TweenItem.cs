@@ -34,6 +34,7 @@ namespace GeneralUnityUtils.Tweening
         /// Move the tweened item.
         /// </summary>
         /// <param name="deltaTime">The amount of time to tween.</param>
+        /// <param name="useLocal">Should this update use the local position or global position</param>
         /// <returns>True if at destination, else false.</returns>
         abstract public bool UpdatePosition(float deltaTime);
 
@@ -44,11 +45,13 @@ namespace GeneralUnityUtils.Tweening
     {
         public Vector2 Start;
         public Vector2 End;
+        public bool UseLocalPosition;
 
-        public StaticTween(Vector2 start, Vector2 end, float time, Transform target) : base(time, target)
+        public StaticTween(Vector2 start, Vector2 end, float time, Transform target, bool useLocalPosition) : base(time, target)
         {
             Start = start;
             End = end;
+            UseLocalPosition = useLocalPosition;
         }
 
         public override bool UpdatePosition(float deltaTime)
@@ -57,12 +60,29 @@ namespace GeneralUnityUtils.Tweening
 
             if(base.currTime >= TweenTime)
             {
-                TargetTransform.position = End;
+                if (UseLocalPosition)
+                {
+                    TargetTransform.localPosition = End;
+                }
+                else
+                {
+                    TargetTransform.position = End;
+                }
+                
                 return true;
             }
             else
             {
-                TargetTransform.position = Vector2.Lerp(Start, End, currTime / TweenTime);
+                if (UseLocalPosition)
+                {
+                    TargetTransform.localPosition = Vector2.Lerp(Start, End, currTime / TweenTime);
+                }
+                else
+                {
+                    TargetTransform.position = Vector2.Lerp(Start, End, currTime / TweenTime);
+                }
+
+                
                 return false;
             }
         }
@@ -121,36 +141,6 @@ namespace GeneralUnityUtils.Tweening
             else
             {
                 TargetTransform.position = Vector2.Lerp(Start.position, End.position, currTime / TweenTime);
-                return false;
-            }
-        }
-    }
-
-    public class GeneralTween : TweenItem
-    {
-        public ref float Parameter;
-        public float Start;
-        public float End;
-        
-        public GeneralTween(float start, float end, float time, ref float target) : base(time, null)
-        {
-            Start = start;
-            End = end;
-            Parameter = target;
-        }
-        
-        public override bool UpdatePosition(float deltaTime)
-        {
-            currTime += deltaTime;
-
-            if (base.currTime >= TweenTime)
-            {
-                Parameter = End;
-                return true;
-            }
-            else
-            {
-                Parameter = Mathf.Lerp(Start, End, currTime / TweenTime);
                 return false;
             }
         }
