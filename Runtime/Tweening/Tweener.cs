@@ -31,10 +31,19 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="target"></param>
         public delegate void OnTweenUpdate(GameObject target, float percentage);
 
-        List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback, bool useScaleTime)> currentTweens = new List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback, bool useScaleTime)>();
+        /// <summary>
+        /// The container for all tweens currently being operated on.
+        /// </summary>
+        List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback, bool useScaleTime)> currentTweens = new();
 
         /// <summary>
+        /// A list of tweens to be added to the list on the following frame. useful to avoid concurrent modification exceptions.
+        /// </summary>
+        List<(TweenItem tween, OnTweenComplete completeCallback, OnTweenUpdate updateCallback, bool useScaleTime)> toAdd = new();
+        
+        /// <summary>
         /// Tween an item between two positions over a set amount of time.
+        /// Note: This action could potentially be delayed by a single frame.
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -42,12 +51,13 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="time"></param>
         public void Tween(Vector2 start, Vector2 end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, OnTweenUpdate update = null, bool useLocalTransform = false)
         {
-            currentTweens.Add((new StaticTween(start, end, time, transform, useLocalTransform), callback, update, useScaledTime));
+            toAdd.Add((new StaticTween(start, end, time, transform, useLocalTransform), callback, update, useScaledTime));
         }
 
         /// <summary>
         /// Tween an item between two positions over a set amount of time.
         /// This tween is dynamic and follows the start and endpoints.
+        /// Note: This action could potentially be delayed by a single frame.
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -55,11 +65,12 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="time"></param>
         public void Tween(Transform start, Transform end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, OnTweenUpdate update = null)
         {
-            currentTweens.Add((new DynamicTween(start, end, time, transform), callback, update, useScaledTime));
+            toAdd.Add((new DynamicTween(start, end, time, transform), callback, update, useScaledTime));
         }
 
         /// <summary>
         /// Tween a recttransform between two positions over a set amount of time.
+        /// Note: This action could potentially be delayed by a single frame.
         /// </summary>
         /// <param name="start"></param>
         /// <param name="end"></param>
@@ -67,7 +78,7 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="time"></param>
         public void Tween(Vector2 start, Vector2 end, RectTransform transform, float time, OnTweenComplete callback, bool useScaleTime = true, OnTweenUpdate update = null)
         {
-            currentTweens.Add((new RectTween(start, end, time, transform), callback, update, useScaleTime));
+            toAdd.Add((new RectTween(start, end, time, transform), callback, update, useScaleTime));
         }
 
         void Awake()
@@ -81,6 +92,16 @@ namespace GeneralUnityUtils.Tweening
 
         public void Update()
         {
+            /* Start each frame by adding the next set of tweens to the list */
+            if (toAdd.Count > 0)
+            {
+                foreach (var item in toAdd)
+                {
+                    currentTweens.Add(item);
+                }
+                toAdd.Clear();
+            }
+            
             /* Update each tween. handle tweens which have completed. */
             List<(TweenItem, OnTweenComplete, OnTweenUpdate, bool)> completed = new List<(TweenItem, OnTweenComplete, OnTweenUpdate, bool)>();
             foreach(var tween in currentTweens)
