@@ -154,6 +154,46 @@ namespace GeneralUnityUtils.PriorityQueue
         }
 
         /// <summary>
+        /// Get the current priority of a key inside of this heap.
+        /// </summary>
+        /// <param name="value">The value to check the priority of.</param>
+        /// <returns>The priority of the supplied node.</returns>
+        public float GetPriority(T value)
+        {
+            /* Find the object */
+            for (int i = 0; i < _size; i++)
+            {
+                if (Heap[i].Value.Equals(value))
+                {
+                    return Heap[i].Priority;
+                }
+            }
+
+            /* Object not found */
+            throw new Exception("Heap value not found.");
+        }
+
+        /// <summary>
+        /// Checks whether a given value is present in this heap.
+        /// </summary>
+        /// <param name="value">The value to be searched for.</param>
+        /// <returns>True if found, else false.</returns>
+        public bool Contains(T value)
+        {
+            /* Find the object */
+            for (int i = 0; i < _size; i++)
+            {
+                if (Heap[i].Value.Equals(value))
+                {
+                    return true;
+                }
+            }
+
+            /* Object not found */
+            return false;
+        }
+
+        /// <summary>
         /// Make sure the heap can fit the new element.
         /// If the heap is too small, resize it.
         /// </summary>

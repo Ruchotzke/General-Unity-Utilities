@@ -1,6 +1,6 @@
 {
   "name": "com.ruchotzke.general-unity-utils",
-  "version": "0.0.9",
+  "version": "0.1.0",
   "displayName": "General Unity Utils",
   "description": "This package contains many different utilities which are useful across a variety of projects.",
   "unity": "2021.2",
