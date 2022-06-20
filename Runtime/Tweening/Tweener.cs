@@ -1,6 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using GeneralUnityUtils.Easing;
+using static GeneralUnityUtils.Easing.Easing;
 
 namespace GeneralUnityUtils.Tweening
 {
@@ -49,9 +51,9 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Vector2 start, Vector2 end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, OnTweenUpdate update = null, bool useLocalTransform = false)
+        public void Tween(Vector2 start, Vector2 end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, EasingFunction easing = null, OnTweenUpdate update = null, bool useLocalTransform = false)
         {
-            toAdd.Add((new StaticTween(start, end, time, transform, useLocalTransform), callback, update, useScaledTime));
+            toAdd.Add((new StaticTween(start, end, time, transform, useLocalTransform, easing), callback, update, useScaledTime));
         }
 
         /// <summary>
@@ -63,9 +65,9 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Transform start, Transform end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, OnTweenUpdate update = null)
+        public void Tween(Transform start, Transform end, Transform transform, float time, OnTweenComplete callback, bool useScaledTime = true, EasingFunction easing = null, OnTweenUpdate update = null)
         {
-            toAdd.Add((new DynamicTween(start, end, time, transform), callback, update, useScaledTime));
+            toAdd.Add((new DynamicTween(start, end, time, transform, easing), callback, update, useScaledTime));
         }
 
         /// <summary>
@@ -76,9 +78,9 @@ namespace GeneralUnityUtils.Tweening
         /// <param name="end"></param>
         /// <param name="transform"></param>
         /// <param name="time"></param>
-        public void Tween(Vector2 start, Vector2 end, RectTransform transform, float time, OnTweenComplete callback, bool useScaleTime = true, OnTweenUpdate update = null)
+        public void Tween(Vector2 start, Vector2 end, RectTransform transform, float time, OnTweenComplete callback, bool useScaleTime = true, EasingFunction easing = null, OnTweenUpdate update = null)
         {
-            toAdd.Add((new RectTween(start, end, time, transform), callback, update, useScaleTime));
+            toAdd.Add((new RectTween(start, end, time, transform, easing), callback, update, useScaleTime));
         }
 
         void Awake()

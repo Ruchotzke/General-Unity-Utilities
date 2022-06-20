@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static GeneralUnityUtils.Easing.Easing;
 
 namespace GeneralUnityUtils.Tweening
 {
@@ -20,13 +21,15 @@ namespace GeneralUnityUtils.Tweening
 
         public float TweenTime;
         public Transform TargetTransform;
+        public EasingFunction Easing;
 
         protected float currTime;
 
-        public TweenItem(float time, Transform target)
+        public TweenItem(float time, Transform target, EasingFunction easing)
         {
             TweenTime = time;
             TargetTransform = target;
+            Easing = easing;
             currTime = 0.0f;
         }
 
@@ -47,7 +50,7 @@ namespace GeneralUnityUtils.Tweening
         public Vector2 End;
         public bool UseLocalPosition;
 
-        public StaticTween(Vector2 start, Vector2 end, float time, Transform target, bool useLocalPosition) : base(time, target)
+        public StaticTween(Vector2 start, Vector2 end, float time, Transform target, bool useLocalPosition, EasingFunction easing) : base(time, target, easing)
         {
             Start = start;
             End = end;
@@ -73,13 +76,19 @@ namespace GeneralUnityUtils.Tweening
             }
             else
             {
+                float amount = currTime / TweenTime;
+                if (Easing != null)
+                {
+                    amount = Easing(amount);
+                }
+
                 if (UseLocalPosition)
                 {
-                    TargetTransform.localPosition = Vector2.Lerp(Start, End, currTime / TweenTime);
+                    TargetTransform.localPosition = Vector2.Lerp(Start, End, amount);
                 }
                 else
                 {
-                    TargetTransform.position = Vector2.Lerp(Start, End, currTime / TweenTime);
+                    TargetTransform.position = Vector2.Lerp(Start, End, amount);
                 }
 
                 
@@ -94,7 +103,7 @@ namespace GeneralUnityUtils.Tweening
         public Vector2 End;
         public RectTransform Rect;
 
-        public RectTween(Vector2 start, Vector2 end, float time, RectTransform target) : base(time, target)
+        public RectTween(Vector2 start, Vector2 end, float time, RectTransform target, EasingFunction easing) : base(time, target, easing)
         {
             Start = start;
             End = end;
@@ -112,7 +121,13 @@ namespace GeneralUnityUtils.Tweening
             }
             else
             {
-                Rect.anchoredPosition = Vector2.Lerp(Start, End, currTime / TweenTime);
+                float amount = currTime / TweenTime;
+                if (Easing != null)
+                {
+                    amount = Easing(amount);
+                }
+
+                Rect.anchoredPosition = Vector2.Lerp(Start, End, amount);
                 return false;
             }
         }
@@ -123,7 +138,7 @@ namespace GeneralUnityUtils.Tweening
         public Transform Start;
         public Transform End;
 
-        public DynamicTween(Transform start, Transform end, float time, Transform target) : base(time, target)
+        public DynamicTween(Transform start, Transform end, float time, Transform target, EasingFunction easing) : base(time, target, easing)
         {
             Start = start;
             End = end;
@@ -140,7 +155,13 @@ namespace GeneralUnityUtils.Tweening
             }
             else
             {
-                TargetTransform.position = Vector2.Lerp(Start.position, End.position, currTime / TweenTime);
+                float amount = currTime / TweenTime;
+                if (Easing != null)
+                {
+                    amount = Easing(amount);
+                }
+
+                TargetTransform.position = Vector2.Lerp(Start.position, End.position, amount);
                 return false;
             }
         }
